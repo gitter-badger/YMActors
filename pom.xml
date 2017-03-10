@@ -8,7 +8,16 @@
     <packaging>jar</packaging>
 
     <name>YMActors</name>
+    <description>Pure JAVA Actors Model Implementation</description>
     <url>http://wwww.yarhoslav.me</url>
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>The GNU GPLv3 is a copyleft license</comments>
+        </license>
+    </licenses>
     <build>
         <plugins>
             <plugin>
@@ -41,6 +50,7 @@
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.hint.license>gpl30</netbeans.hint.license>
     </properties>
 
     <dependencies>
@@ -59,5 +69,15 @@
         </dependency>
 
     </dependencies>
-    
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>config/sun_checks.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
