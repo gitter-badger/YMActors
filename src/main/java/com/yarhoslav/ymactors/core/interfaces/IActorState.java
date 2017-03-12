@@ -26,4 +26,6 @@ public interface IActorState {
     public void execute(Object pMsg, IActorRef pSender) throws Exception;
 
     public void addBehavior(IActorMsg pMsg, IAction pAction);
+    
+    public String id();
 }

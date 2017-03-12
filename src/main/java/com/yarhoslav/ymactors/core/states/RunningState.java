@@ -31,8 +31,8 @@ public final class RunningState extends BaseState {
     private final BaseActor owner;
 
     public RunningState(BaseActor pOwner) {
+        super("RUNNING_STATE");
         this.owner = pOwner;
-        
         addBehavior(PoisonPill.getInstance(), new ActionStopActor(owner));
     }
 

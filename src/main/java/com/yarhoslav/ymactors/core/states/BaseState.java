@@ -31,6 +31,11 @@ import java.util.Map;
 public abstract class BaseState implements IActorState {
 
     private final Map<String, IAction> behaviors = new HashMap();
+    private final String id;
+    
+    public BaseState(String pId) {
+        id = pId;
+    }
 
     @Override
     public void addBehavior(IActorMsg pMsg, IAction pAction) {
@@ -48,6 +53,11 @@ public abstract class BaseState implements IActorState {
         } else {
             unknownMsg(pMsg, pSender);
         }
+    }
+    
+    @Override
+    public String id() {
+        return id;
     }
     
     public abstract void unknownMsg(Object pMsg, IActorRef pSender) throws Exception;

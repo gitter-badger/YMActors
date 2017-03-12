@@ -17,15 +17,23 @@
  */
 package com.yarhoslav.ymactors.core.interfaces;
 
+import java.util.Iterator;
+
 /**
  *
  * @author yarhoslavme
  */
 public interface IObservable {
 
-    public void addObserver(Object pEvent, Object pMsg, IActorRef pActor);
+    public void addObserver(String pEvent, Object pMsg, IObserver pObserver) throws IllegalArgumentException;
 
-    public void removeObserver(Object pEvent, IActorRef pActor);
+    public void removeObserver(String pEvent, IObserver pObserver) throws IllegalArgumentException;
 
-    public void notifyObservers(Object pEvent);
+    public void notifyObservers(String pEvent);
+
+    public void publishEvent(String pEvent);
+
+    public Iterator availableEvents();
+    
+    public void clearEvents();
 }

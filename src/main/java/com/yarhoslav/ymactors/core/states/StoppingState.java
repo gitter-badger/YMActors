@@ -17,26 +17,21 @@
  */
 package com.yarhoslav.ymactors.core.states;
 
-import com.yarhoslav.ymactors.core.interfaces.IAction;
-import com.yarhoslav.ymactors.core.interfaces.IActorMsg;
 import com.yarhoslav.ymactors.core.interfaces.IActorRef;
-import com.yarhoslav.ymactors.core.interfaces.IActorState;
 
 /**
  *
  * @author yarhoslavme
  */
-public final class StoppingState implements  IActorState {
+public final class StoppingState extends BaseState {
 
-    @Override
-    public void execute(Object pMsg, IActorRef pSender) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public StoppingState() {
+        super("STOPPING_STATE");
     }
 
     @Override
-    public void addBehavior(IActorMsg pMsg, IAction pAction) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void unknownMsg(Object pMsg, IActorRef pSender) throws Exception {
+        throw new IllegalStateException("Stopping state cannot process any message.");
     }
-
 
 }

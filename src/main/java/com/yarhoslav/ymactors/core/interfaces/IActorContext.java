@@ -28,5 +28,7 @@ public interface IActorContext {
     public void setState(IActorState pState);
     
     public IActorState getState();
+    
+    public IObservable getObservableService();
 
 }

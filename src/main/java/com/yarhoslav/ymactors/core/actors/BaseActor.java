@@ -24,17 +24,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.yarhoslav.ymactors.core.interfaces.IActorRef;
+import com.yarhoslav.ymactors.core.interfaces.IObservable;
+import com.yarhoslav.ymactors.core.interfaces.IObserver;
 import com.yarhoslav.ymactors.core.interfaces.ISystem;
 import com.yarhoslav.ymactors.core.interfaces.IWorker;
 import com.yarhoslav.ymactors.core.messages.BaseEnvelope;
 import com.yarhoslav.ymactors.core.states.RunningState;
 import com.yarhoslav.ymactors.core.states.StoppingState;
+import java.util.Iterator;
 
 /**
  *
  * @author yarhoslavme
  */
-public abstract class BaseActor implements IActorRef {
+public abstract class BaseActor implements IActorRef, IObservable {
 
     private final Logger logger = LoggerFactory.getLogger(BaseActor.class);
     private IActorContext context;
@@ -67,9 +70,12 @@ public abstract class BaseActor implements IActorRef {
     public void start() throws IllegalStateException {
         context = new BaseContext(system);
         worker = new BaseWorker(context);
+        //TODO: ID should be an Static Constant in StoppingState?
+        publishEvent(new StoppingState().id());
         try {
             postStart();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             logger.warn("Actor {} throws an exception in postStart method while starting: {}", name, ex.getMessage());
             throw new IllegalStateException(String.format("Error starting Actor %s: %s", name, ex));
         }
@@ -82,9 +88,11 @@ public abstract class BaseActor implements IActorRef {
         worker.discardMessages();
         try {
             beforeStop();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             throw new IllegalStateException(String.format("Error stoping Actor %s", name));
-        } finally {
+        }
+        finally {
             system.removeActor(this);
             context.setState(new StoppingState());
             //TODO: Cancel and remove ticket from YMExecutor
@@ -102,5 +110,35 @@ public abstract class BaseActor implements IActorRef {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void addObserver(String pEvent, Object pMsg, IObserver pObserver) throws IllegalArgumentException {
+        context.getObservableService().addObserver(pEvent, pMsg, pObserver);
+    }
+
+    @Override
+    public void removeObserver(String pEvent, IObserver pObserver) throws IllegalArgumentException {
+        context.getObservableService().removeObserver(pEvent, pObserver);
+    }
+
+    @Override
+    public void notifyObservers(String pEvent) {
+        context.getObservableService().notifyObservers(pEvent);
+    }
+
+    @Override
+    public void publishEvent(String pEvent) {
+        context.getObservableService().publishEvent(pEvent);
+    }
+
+    @Override
+    public Iterator availableEvents() {
+        return context.getObservableService().availableEvents();
+    }
+
+    @Override
+    public void clearEvents() {
+        context.getObservableService().clearEvents();
     }
 }

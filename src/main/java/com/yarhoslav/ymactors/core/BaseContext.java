@@ -21,7 +21,9 @@ import com.yarhoslav.ymactors.core.interfaces.IActorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.yarhoslav.ymactors.core.interfaces.IActorState;
+import com.yarhoslav.ymactors.core.interfaces.IObservable;
 import com.yarhoslav.ymactors.core.interfaces.ISystem;
+import com.yarhoslav.ymactors.core.services.ObservableService;
 
 /**
  *
@@ -32,6 +34,7 @@ public final class BaseContext implements IActorContext {
 
     Logger logger = LoggerFactory.getLogger(BaseContext.class);
     private final ISystem system;
+    private final ObservableService observableService = new ObservableService();
     private IActorState state;
 
     public BaseContext(ISystem pSystem) {
@@ -45,13 +48,18 @@ public final class BaseContext implements IActorContext {
 
     @Override
     public void setState(IActorState pState) {
-        //TODO: Trigger event notification
         state = pState;
+        observableService.notifyObservers(pState.id());
     }
 
     @Override
     public IActorState getState() {
         return state;
+    }
+
+    @Override
+    public IObservable getObservableService() {
+        return observableService;
     }
 
 }
