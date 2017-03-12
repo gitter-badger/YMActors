@@ -70,8 +70,8 @@ public abstract class BaseActor implements IActorRef {
         try {
             postStart();
         } catch (Exception ex) {
-            logger.warn("Actor {} throws an exception in preStart method while starting: {}", name, ex.getMessage());
-            throw new IllegalStateException("Error starting Actor.", ex);
+            logger.warn("Actor {} throws an exception in postStart method while starting: {}", name, ex.getMessage());
+            throw new IllegalStateException(String.format("Error starting Actor %s: %s", name, ex));
         }
         context.setState(new RunningState(this));
         isAlive.set(true);

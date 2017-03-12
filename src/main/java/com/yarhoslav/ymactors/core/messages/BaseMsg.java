@@ -23,7 +23,7 @@ import com.yarhoslav.ymactors.core.interfaces.IActorMsg;
  *
  * @author YarhoslavME
  */
-public final class BaseMsg implements IActorMsg {
+public abstract class BaseMsg implements IActorMsg {
 
     private final Object data;
     private final String id;
