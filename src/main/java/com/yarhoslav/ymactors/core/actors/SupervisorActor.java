@@ -20,13 +20,19 @@ package com.yarhoslav.ymactors.core.actors;
 import com.yarhoslav.ymactors.core.interfaces.IActorRef;
 import com.yarhoslav.ymactors.core.interfaces.IObservable;
 import com.yarhoslav.ymactors.core.interfaces.IObserver;
+import com.yarhoslav.ymactors.core.messages.DyingMsg;
 import com.yarhoslav.ymactors.core.states.StoppingState;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
  * @author Yarhoslav ME <yarhoslavme@gmail.com>
  */
 public abstract class SupervisorActor extends BaseActor implements IObserver {
+    
+    private final Queue<IActorRef> minions = new ConcurrentLinkedQueue<>();
     
     //TODO: Define messages for observables minions.
     //TODO: Define list of minions
@@ -40,8 +46,17 @@ public abstract class SupervisorActor extends BaseActor implements IObserver {
     
     public BaseActor newMinion(BaseActor pActorType, String pName) throws IllegalArgumentException {
         BaseActor minion = getContext().getSystem().addActor(pActorType, pName);
-        minion.addObserver(new StoppingState().id(), pName, this);
+        minion.addObserver(new StoppingState().id(), DyingMsg.getInstance(), this);
         //TODO: Add observer for event ERROR_STATE.
+        minions.add(minion);
         return minion;
-    }    
+    }
+    
+    public void forgetMinion(IActorRef pMinion) {
+        minions.remove(pMinion);
+    }
+    
+    public Iterator getMinions() {
+        return minions.iterator();
+    }
 }
