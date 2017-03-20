@@ -141,4 +141,8 @@ public abstract class BaseActor implements IActorRef, IObservable {
     public void clearEvents() {
         context.getObservableService().clearEvents();
     }
+    
+    public IActorContext getContext() {
+        return context;
+    }
 }

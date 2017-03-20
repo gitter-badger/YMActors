@@ -75,11 +75,11 @@ public class ActorSystem implements ISystem {
     }
 
     @Override
-    public <E extends BaseActor> IActorRef addActor(E pActorType, String pName) throws IllegalArgumentException {
+    public BaseActor addActor(BaseActor pActorType, String pName) throws IllegalArgumentException {
         if (actors.containsKey(pName)) {
             throw new IllegalArgumentException(String.format("Name:%s already used in System %s", pName, name));
         } else {
-            E newChild = pActorType;
+            BaseActor newChild = pActorType;
             newChild.setName(pName);
             newChild.setSystem(this);
             newChild.start();

@@ -33,7 +33,7 @@ public interface ISystem {
        
     public IActorRef findActor(String pName) throws IllegalArgumentException;
     
-    public <E extends BaseActor> IActorRef addActor(E pActorType, String pName) throws IllegalArgumentException;
+    public BaseActor addActor(BaseActor pActorType, String pName) throws IllegalArgumentException;
     
     public void removeActor(IActorRef pActor) throws IllegalArgumentException;
 
