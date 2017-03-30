@@ -45,7 +45,23 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.0.1</version>
             </plugin>
-
+            <!--
+            <plugin>
+                <groupId>com.qulice</groupId>
+                <artifactId>qulice-maven-plugin</artifactId>
+                <version>0.17.1</version>
+                <configuration>
+                    <license>file:${basedir}/LICENSE.txt</license>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
         </plugins>
     </build>
     <properties>
