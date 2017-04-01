@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of YMActors project.
  * Copyright (C) 2017 Yarhoslav ME <yarhoslavme@gmail.com>
  *
