@@ -17,6 +17,8 @@
  */
 package ymactors;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.util.StatusPrinter;
 import com.yarhoslav.ymactors.core.ActorSystem;
 import com.yarhoslav.ymactors.core.actors.EmptyActor;
 import java.io.BufferedReader;
@@ -25,6 +27,7 @@ import java.io.InputStreamReader;
 import static java.lang.System.currentTimeMillis;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -42,7 +45,8 @@ public class YMActors {
             while (!parar.get()) {
                 try {
                     TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException ex) {
+                }
+                catch (InterruptedException ex) {
                     parar.set(true);
                 }
 
@@ -67,18 +71,21 @@ public class YMActors {
 
     void test1() {
         //TODO: Compare performance with AKKA
+        // print internal state
+        //LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        //StatusPrinter.print(lc);
         try {
             universe.start();
             status.start();
-            
+
             ContadorActor ca = null;
             for (int i = 0; i < 1000; i++) {
                 ca = (ContadorActor) universe.addActor(new ContadorActor(10), "CONTADOR" + i);
                 ca.tell("contar", EmptyActor.getInstance());
             }
-            
+
             System.out.println("Ultimo actor: " + ca.getName());
-/*
+            /*
             IActorRef tmpActor = universe.findActor("/CONTADOR0");
             System.out.println("/CONTADOR0/"+tmpActor.getName());
             tmpActor.getContext().newActor(new ContadorActor(5), "OTRO");
@@ -93,27 +100,30 @@ public class YMActors {
 
             //universe.findActor("/CONTADOR0").tell("contar", EmptyActor.getInstance());
             //universe.tell(new BroadCastMsg("contar", EmptyActor.getInstance()), EmptyActor.getInstance());
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error: " + e);
-        } finally {
+        }
+        finally {
             BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
             try {
                 buf.readLine();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
             universe.ShutDownNow();
             status.interrupt();
         }
-        
+
         BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                buf.readLine();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+        try {
+            buf.readLine();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     void test3() {
@@ -130,40 +140,44 @@ public class YMActors {
         System.out.println(ex.getMessage());
         }*/
     }
-    
+
     void test2() {
         //TODO: Compare performance with AKKA
         try {
             universe.start();
             status.start();
-            
-            ContadorActor ping = (ContadorActor)universe.addActor(new ContadorActor(100000), "PING");
-            ContadorActor pong = (ContadorActor)universe.addActor(new ContadorActor(100000), "PONG");
-            
+
+            ContadorActor ping = (ContadorActor) universe.addActor(new ContadorActor(100000), "PING");
+            ContadorActor pong = (ContadorActor) universe.addActor(new ContadorActor(100000), "PONG");
+
             ping.start();
             pong.start();
-            
+
             ping.tell("contar", pong);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
             try {
                 buf.readLine();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
             universe.ShutDownNow();
             status.interrupt();
         }
-        
+
         BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                buf.readLine();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+        try {
+            buf.readLine();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    
+
 }
